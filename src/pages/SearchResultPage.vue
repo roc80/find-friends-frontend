@@ -23,18 +23,13 @@ onMounted(async () => {
       })
       .then(function (response) {
         console.log(response.data);
-        return response.data?.data;
+        return response.data;
       })
       .catch(function (error) {
-        // 处理错误情况
         console.log(error);
       })
-  if (userList.value) {
-    userList.value.forEach(user => {
-      user.tags = JSON.parse(user.tags)
-    })
-  }
-
+  let totalTagNameList = ref<string[][]>()
+  console.log(`搜索到：${userList.value.length} 个用户`)
 })
 </script>
 
@@ -46,8 +41,8 @@ onMounted(async () => {
             :desc=user.email
   >
     <template #tags>
-      <van-tag v-for="tag in user.tags" plain type="primary" style="margin-top: 5px; margin-right: 5px">
-        {{ tag }}
+      <van-tag v-for="tagName in JSON.parse(user.tags)" plain type="primary" style="margin-top: 5px; margin-right: 5px">
+        {{ tagName }}
       </van-tag>
     </template>
     <template #footer>

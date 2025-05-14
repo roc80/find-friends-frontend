@@ -2,9 +2,7 @@ import axios from "axios";
 
 const myAxios = axios.create({
     baseURL: "http://localhost:8080/api",
-    headers: {
-        "Content-Type": "application/json",
-    },
+    withCredentials: true,
 });
 
 myAxios.interceptors.request.use(config => {
@@ -15,8 +13,9 @@ myAxios.interceptors.request.use(config => {
 });
 
 myAxios.interceptors.response.use(response => {
-    console.log(`response interceptor: response=${response}`);
-    return response;
+    // 直接返回axios包装的后端返回的res，只关注业务层面包装的响应。
+    console.log(`response interceptor: response payload=${response.data}`)
+    return response.data;
 }, function (error) {
     return Promise.reject(error);
 });
