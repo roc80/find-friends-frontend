@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 // todo 用户中心和找伙伴 打通，找伙伴页面有登录态，需要能获取到当前登录的用户信息。这里先用假数据。
 
-const currentUser = ref<API.CurrentUser>({
+const currentUser = ref<API.User>({
   userId: 1,
   userName: 'lipeng',
   avatarUrl: 'https://avatars.githubusercontent.com/u/85272827?v=4',

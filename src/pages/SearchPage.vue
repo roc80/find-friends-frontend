@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {ref} from 'vue'
+import {useRouter} from "vue-router";
 
 const searchText = ref('')
-const onSearch = (val: string) => {
+const onSearchTags = (val: string) => {
   const list = originalTagNameList.flatMap(parent => parent.children)
   for (let item of list) {
     if (item.text === val) {
@@ -39,64 +40,110 @@ const originalTagNameList = [
       {text: '数字游民', id: '数字游民'},
     ],
   },
+  {
+    text: '性别',
+    children: [
+      {text: '男', id: '男'},
+      {text: '女', id: '女'},
+    ],
+  },
 ]
-let tagNameList = [...originalTagNameList]
 
 const onRemoveTag = (index: number) => {
   activeIds.value = activeIds.value.filter((id) =>
       id !== activeIds.value[index]
   )
 }
-
+const router = useRouter()
+const onSearchUser = () => {
+  router.push({
+    path: '/search/tags',
+    query: {
+      tagNameList: activeIds.value,
+    },
+  })
+}
 
 </script>
 
 <template>
-  <form action="/">
-    <van-search
-        autofocus
-        v-model="searchText"
-        show-action
-        placeholder="请输入标签名称"
-        @search="onSearch"
-        @cancel="onCancel"
-    />
-  </form>
+  <div class="page-container">
 
-  <p style="font-size: 20px;">
-    已选择标签
-  </p>
-  <div>
-    <van-space wrap :size="18">
-      <van-tag class="custom-tag"
-               v-for="(activeId, index) in activeIds"
-               closeable
-               round
-               size="large"
-               type="primary"
-               @close="onRemoveTag(index)"
-      >
-        {{ activeId }}
-      </van-tag>
-    </van-space>
+    <div class="fixed-part">
+      <form action="/">
+        <van-search
+            v-model="searchText"
+            show-action
+            placeholder="请输入标签名称"
+            @search="onSearchTags"
+            @cancel="onCancel"
+        />
+      </form>
+    </div>
+
+    <div class="scrollable-content">
+      <!-- 已选择标签 -->
+      <p style="font-size: 20px;">已选择标签</p>
+      <div>
+        <van-space wrap :size="14">
+          <van-tag class="custom-tag"
+                   v-for="(activeId, index) in activeIds"
+                   closeable
+                   round
+                   size="large"
+                   type="primary"
+                   @close="onRemoveTag(index)"
+          >
+            {{ activeId }}
+          </van-tag>
+        </van-space>
+      </div>
+
+      <van-divider/>
+
+      <!-- 所有标签 -->
+      <p style="font-size: 20px;">所有标签</p>
+
+      <van-tree-select
+          v-model:active-id="activeIds"
+          v-model:main-active-index="activeIndex"
+          :items="originalTagNameList"
+      />
+
+      <van-button style="margin-bottom: 16px;" type="primary" block @click="onSearchUser">
+        搜索
+      </van-button>
+
+    </div>
+
   </div>
-  <van-divider/>
-  <p style="font-size: 20px;">
-    所有标签
-  </p>
-  <van-tree-select
-      v-model:active-id="activeIds"
-      v-model:main-active-index="activeIndex"
-      :items="tagNameList"
-  />
-
 </template>
 
 <style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px);
+}
+
+.fixed-part {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-right: 10px;
+}
+
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
 .custom-tag {
   padding: 10px 10px;
   font-size: 14px;
   border-radius: 16px;
-  background: linear-gradient(45deg, #A1C4FD, #C2E9FB)
+  background: linear-gradient(45deg, #A1C4FD, #C2E9FB);
 }
 </style>

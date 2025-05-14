@@ -8,10 +8,10 @@
   <!-- 路由视图 - 这是重要的部分，用于显示当前路由对应的组件 -->
   <router-view></router-view>
 
-  <van-tabbar route @change="onChange">
+  <van-tabbar route @change="onChange" style="position: fixed; bottom: 0; height: 50px;">
     <van-tabbar-item link to= "/" icon="home-o" name="index">首页</van-tabbar-item>
     <van-tabbar-item link to="/search" icon="search" name="search">搜索</van-tabbar-item>
-    <van-tabbar-item link to="/user" icon="https://fastly.jsdelivr.net/npm/@vant/assets/icon-demo.png" name="user">我的</van-tabbar-item>
+    <van-tabbar-item link to="/user" icon="contact-o" name="user">我的</van-tabbar-item>
   </van-tabbar>
 
 </template>
