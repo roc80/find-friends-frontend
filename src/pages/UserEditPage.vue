@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import myAxios from "@/utils/myAxios";
 import {showFailToast, showSuccessToast} from "vant";
-import fetchUserInfo from "@/user/getCurrentUser";
+import fetchUserInfo from "@/user/UserUtil";
 
 const route = useRoute();
 const router = useRouter();

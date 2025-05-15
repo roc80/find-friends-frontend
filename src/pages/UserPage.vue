@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import fetchUserInfo from "@/user/getCurrentUser";
+import fetchUserInfo, {parseTags} from "@/user/UserUtil";
 
 let currentUser = ref<API.User>({
   userName: '',
@@ -15,14 +15,11 @@ let currentUser = ref<API.User>({
   state: '',
   tags: '',
 });
-let tagArray = ref<string[]>([])
+
 onMounted(async () => {
   fetchUserInfo()
       .then((response) => {
         currentUser.value = response?.data
-        if (currentUser.value) {
-          tagArray.value = JSON.parse(currentUser.value.tags);
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +78,7 @@ const goEditPage = (key: string, fieldName: string) => {
       <van-cell title="标签" is-link @click="goEditPage('tags', '标签')">
         <template #value>
           <van-tag
-              v-for="tag in tagArray"
+              v-for="tag in parseTags(currentUser.tags)"
               type="primary"
               style="margin-right: 5px; margin-bottom: 5px"
           >

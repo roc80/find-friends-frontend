@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import myAxios from "@/utils/myAxios";
 import qs from "qs";
+import UserCardList from "@/components/UserCardList.vue";
 import User = API.User;
 
 const route = useRoute()
@@ -28,33 +29,13 @@ onMounted(async () => {
       .catch(function (error) {
         console.log(error);
       })
-  let totalTagNameList = ref<string[][]>()
   console.log(`搜索到：${userList.value.length} 个用户`)
 })
 </script>
 
 <template>
-  <van-empty v-if="!userList || userList.length == 0" description="未找到用户"/>
-  <van-card class="custom-card" v-for="user in userList"
-            :thumb=user.avatarUrl
-            :title=user.userName
-            :desc=user.email
-  >
-    <template #tags>
-      <van-tag v-for="tagName in JSON.parse(user.tags)" plain type="primary" style="margin-top: 5px; margin-right: 5px">
-        {{ tagName }}
-      </van-tag>
-    </template>
-    <template #footer>
-      <van-button size="small">更多信息</van-button>
-    </template>
-  </van-card>
-
+  <UserCardList :userList="userList"/>
 </template>
 
 <style scoped>
-.custom-card {
-  --van-card-thumb-radius: 60px;
-  --van-card-thumb-size: 70px;
-}
 </style>

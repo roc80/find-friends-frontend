@@ -9,6 +9,6 @@ declare namespace API {
         userRole: string;
         createDatetime: string;
         state: string;
-        tags: string;
+        tags?: string;
     };
 }
