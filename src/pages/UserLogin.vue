@@ -2,24 +2,37 @@
 import myAxios from "@/utils/myAxios";
 import {ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
+import {useUserStore} from "@/stores/user";
 
 const username = ref('');
 const password = ref('');
-const router = useRouter()
-const onSubmit = () => {
-  myAxios.post('/user/login', {
-    username: username.value,
-    password: password.value
-  }).then(res => {
-    console.log(res);
+const router = useRouter();
+const route = useRoute();
+const onSubmit = async () => {
+  try {
+    const res = await myAxios.post<API.CommonResponse<API.User | null>>('/user/login', {
+      username: username.value,
+      password: password.value
+    });
+
     if (res.code === 20000) {
-      showSuccessToast('登录成功')
-      router.replace('/')
+      useUserStore().setUser(res.data!)
+      const redirect = route.query.redirect as string;
+      console.log('after login redirect: ', redirect);
+      if (redirect) {
+        await router.push(redirect);
+      } else {
+        await router.push('/');
+      }
+      showSuccessToast('登录成功');
     } else {
-      showFailToast('登录失败')
+      showFailToast('登录失败');
     }
-  })
+  } catch (e) {
+    console.log(e);
+    showFailToast('登录失败，请稍后重试');
+  }
 };
 </script>
 

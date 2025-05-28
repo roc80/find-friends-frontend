@@ -17,7 +17,7 @@ onMounted(async () => {
           tagNameList: tagNameList
         },
         paramsSerializer: {
-          serialize: (params) => qs.stringify(params, {
+          serialize: (params: any) => qs.stringify(params, {
             arrayFormat: 'repeat'
           })
         }

@@ -17,6 +17,7 @@ const onSearchTags = (val: string) => {
 const onCancel = () => {
   searchText.value = ''
   activeIds.value = []
+  history.back()
 }
 const activeIds = ref<string[]>([])
 const activeIndex = ref(0)
@@ -110,11 +111,11 @@ const onSearchUser = () => {
           :items="originalTagNameList"
       />
 
-      <van-button style="margin-bottom: 16px;" type="primary" block @click="onSearchUser">
-        搜索
-      </van-button>
-
     </div>
+
+    <van-button id="button" type="primary" block @click="onSearchUser">
+      搜索
+    </van-button>
 
   </div>
 </template>
@@ -123,7 +124,9 @@ const onSearchUser = () => {
 .page-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 100px);
+  height: 100vh;
+  margin-left: 14px;
+  margin-right: 14px;
 }
 
 .fixed-part {
@@ -136,8 +139,6 @@ const onSearchUser = () => {
 .scrollable-content {
   flex: 1;
   overflow-y: auto;
-  margin-left: 14px;
-  margin-right: 14px;
 }
 
 .custom-tag {
@@ -145,5 +146,9 @@ const onSearchUser = () => {
   font-size: 14px;
   border-radius: 16px;
   background: linear-gradient(45deg, #A1C4FD, #C2E9FB);
+}
+#button {
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 </style>

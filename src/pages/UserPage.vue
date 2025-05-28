@@ -1,45 +1,29 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import fetchUserInfo, {parseTags} from "@/user/UserUtil";
+import {parseTags} from "@/user/UserUtil";
+import {defaultUserState, useUserStore} from "@/stores/user";
 
-let currentUser = ref<API.User>({
-  userName: '',
-  avatarUrl: '',
-  userId: 0,
-  gender: '',
-  email: '',
-  phone: '',
-  userRole: '',
-  createDatetime: '',
-  state: '',
-  tags: '',
-});
-
-onMounted(async () => {
-  fetchUserInfo()
-      .then((response) => {
-        currentUser.value = response?.data
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-});
+const currentUser: API.User = useUserStore().currentUser ?? defaultUserState;
 
 const userEditPagePath = '/user/edit';
 const router = useRouter()
 const goEditPage = (key: string, fieldName: string) => {
-  if (key in currentUser.value) {
+  if (key in currentUser) {
     const typedKey = key as keyof API.User;
     router.push({
       path: userEditPagePath,
       query: {
         key: key,
         name: fieldName,
-        value: currentUser.value[typedKey]
+        value: currentUser[typedKey]
       },
     })
   }
+}
+
+const onLogout = async () => {
+  await useUserStore().logout();
+  await router.push('/user/login');
 }
 </script>
 
@@ -88,7 +72,15 @@ const goEditPage = (key: string, fieldName: string) => {
       </van-cell>
     </van-cell-group>
   </div>
+
+  <van-button id="button" type="primary" block @click="onLogout">
+    退出登录
+  </van-button>
 </template>
 
 <style scoped>
+#button {
+  margin: 20px 20px; /*上下20 左右20*/
+  width: calc(100% - 40px); /*屏幕宽度 - margin*/
+}
 </style>

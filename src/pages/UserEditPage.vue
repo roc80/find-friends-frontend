@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import myAxios from "@/utils/myAxios";
 import {showFailToast, showSuccessToast} from "vant";
-import fetchUserInfo from "@/user/UserUtil";
+import {defaultUserState, useUserStore} from "@/stores/user";
 
 const route = useRoute();
 const router = useRouter();
@@ -15,20 +15,14 @@ const editUser = ref({
 if (editUser.value.fieldKey === 'tags') {
   editUser.value.fieldValue = JSON.parse(editUser.value.fieldValue);
 }
-let currentUser = ref<API.User>({} as API.User);
-onMounted(async () => {
-  fetchUserInfo()
-      .then((response) => {
-        currentUser.value = response?.data
-      });
-});
+const currentUser: API.User = useUserStore().currentUser ?? defaultUserState;
 
 const onSubmit = () => {
   if (editUser.value.fieldKey === 'tags') {
     editUser.value.fieldValue = stringToJsonArray(editUser.value.fieldValue);
   }
   myAxios.post('/user/update', {
-    "userId": currentUser.value.userId,
+    "userId": currentUser.userId,
     [editUser.value.fieldKey]: editUser.value.fieldValue,
   }).then(res => {
     if (res.data === 0) {

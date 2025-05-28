@@ -11,4 +11,12 @@ declare namespace API {
         state: string;
         tags?: string;
     };
+
+    type CommonResponse<T> = {
+        code: number;
+        message: string;
+        description: string;
+        data?: T;
+        dateTime: Date;
+    };
 }
