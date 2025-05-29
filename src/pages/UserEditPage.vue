@@ -3,7 +3,9 @@ import {ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import myAxios from "@/utils/myAxios";
 import {showFailToast, showSuccessToast} from "vant";
-import {defaultUserState, useUserStore} from "@/stores/user";
+import {defaultUserState, useUserStore} from "@/stores/UserLoginState";
+import {UserAPI} from "@/api/user";
+import {User} from "@/typing";
 
 const route = useRoute();
 const router = useRouter();
@@ -15,23 +17,29 @@ const editUser = ref({
 if (editUser.value.fieldKey === 'tags') {
   editUser.value.fieldValue = JSON.parse(editUser.value.fieldValue);
 }
-const currentUser: API.User = useUserStore().currentUser ?? defaultUserState;
+const currentUser: User = useUserStore().currentUser ?? defaultUserState;
 
-const onSubmit = () => {
+const onSubmit = async () => {
   if (editUser.value.fieldKey === 'tags') {
     editUser.value.fieldValue = stringToJsonArray(editUser.value.fieldValue);
   }
-  myAxios.post('/user/update', {
-    "userId": currentUser.userId,
-    [editUser.value.fieldKey]: editUser.value.fieldValue,
-  }).then(res => {
-    if (res.data === 0) {
-      showSuccessToast('修改成功');
-      router.replace('/user')
-    } else {
+
+  try {
+    const response = await myAxios.post(UserAPI.update, {
+      "userId": currentUser.userId,
+      [editUser.value.fieldKey]: editUser.value.fieldValue,
+    })
+    if (response.code !== 20000) {
       showFailToast('修改失败');
+      return;
+    } else {
+      showSuccessToast('修改成功');
+      await router.push('/user');
     }
-  })
+  } catch (e) {
+    showFailToast('修改失败');
+    console.log(`${UserAPI.update} 请求失败`, e);
+  }
 };
 
 function stringToJsonArray(inputString: string) {

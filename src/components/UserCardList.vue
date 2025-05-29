@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import User = API.User;
-import {parseTags} from "@/user/UserUtil";
+import {parseTags} from "@/utils/UserUtil";
+import {User} from "@/typing";
 
 const props = defineProps<{ userList: User[]}>()
 </script>

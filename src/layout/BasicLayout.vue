@@ -50,7 +50,7 @@ watch(
 <template>
   <van-nav-bar
       id="nav-bar"
-      :title="route.meta.title"
+      :title="route.meta.title as string"
       left-arrow
       @click-left="onClickLeft"
       @click-right="onClickRight">

@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import {parseTags} from "@/user/UserUtil";
-import {defaultUserState, useUserStore} from "@/stores/user";
+import {parseTags} from "@/utils/UserUtil";
+import {defaultUserState, useUserStore} from "@/stores/UserLoginState";
+import {User} from "@/typing";
 
-const currentUser: API.User = useUserStore().currentUser ?? defaultUserState;
+const currentUser: User = useUserStore().currentUser ?? defaultUserState;
 
 const userEditPagePath = '/user/edit';
 const router = useRouter()
 const goEditPage = (key: string, fieldName: string) => {
   if (key in currentUser) {
-    const typedKey = key as keyof API.User;
+    const typedKey = key as keyof User;
     router.push({
       path: userEditPagePath,
       query: {

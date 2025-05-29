@@ -1,22 +1,24 @@
 import {defineStore} from 'pinia';
 import myAxios from "@/utils/myAxios";
 import {showSuccessToast} from "vant";
+import {UserAPI} from "@/api/user";
+import {CommonResponse, User} from "@/typing";
 
-export const defaultUserState: API.User = {
-        userName: '',
-        avatarUrl: '',
-        userId: 0,
-        gender: '',
-        email: '',
-        phone: '',
-        userRole: '',
-        createDatetime: '',
-        state: '',
-        tags: '',
+export const defaultUserState: User = {
+    userName: '',
+    avatarUrl: '',
+    userId: 0,
+    gender: '',
+    email: '',
+    phone: '',
+    userRole: '',
+    createDatetime: '',
+    state: '',
+    tags: '',
 };
 
 interface UserState {
-    userState: API.User | null;
+    userState: User | null;
     isLoading: boolean;
 }
 
@@ -31,7 +33,7 @@ export const useUserStore = defineStore('user', {
         async fetchUser() {
             this.isLoading = true;
             try {
-                const res = await myAxios.get<API.CommonResponse<API.User | null>>('/user/current');
+                const res = await myAxios.get<CommonResponse<User>>(UserAPI.current);
                 if (res.code === 20000 && res.data) {
                     this.userState = res.data;
                     // 存储到 localStorage 以便页面刷新后恢复
@@ -71,7 +73,7 @@ export const useUserStore = defineStore('user', {
         },
 
         // 登录成功后设置用户信息
-        setUser(user: API.User) {
+        setUser(user: User) {
             this.userState = user;
             this.saveToStorage();
             console.log('用户登录成功', user);
@@ -80,7 +82,7 @@ export const useUserStore = defineStore('user', {
         async logout() {
             try {
                 // 1. 通知后端清除 session
-                const res = await myAxios.post<API.CommonResponse<boolean>>('/user/logout');
+                const res = await myAxios.post<CommonResponse<boolean>>(UserAPI.logout);
                 if (res.data) {
                     console.log('后端登录状态已清除');
                 } else {
@@ -113,7 +115,7 @@ export const useUserStore = defineStore('user', {
             try {
                 const userInfo = localStorage.getItem('userInfo');
                 if (userInfo) {
-                    this.userState = JSON.parse(userInfo) as API.User;
+                    this.userState = JSON.parse(userInfo) as User;
                     console.log('从本地存储恢复用户信息', this.userState);
                 }
             } catch (e) {

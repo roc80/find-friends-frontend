@@ -37,7 +37,7 @@ myAxios.interceptors.request.use(config => {
 myAxios.interceptors.response.use(
     (response: AxiosResponse<any>) => {
         // 直接返回axios包装的后端返回的res，只关注业务层面包装的响应。
-        // console.log(`response interceptor: response payload=`, response.data);
+        console.log(`global response interceptor: response payload = ${response.data}`);
         return response.data;
     },
     function (error) {

@@ -4,17 +4,19 @@ import UserPage from "@/pages/UserPage.vue";
 import IndexPage from "@/pages/IndexPage.vue";
 import UserEditPage from "@/pages/UserEditPage.vue";
 import SearchResultPage from "@/pages/SearchResultPage.vue";
-import UserLogin from "@/pages/UserLogin.vue";
+import UserLogin from "@/pages/UserLoginPage.vue";
 import BasicLayout from "@/layout/BasicLayout.vue";
 import TeamPage from "@/pages/TeamPage.vue";
-import {useUserStore} from "@/stores/user";
+import {useUserStore} from "@/stores/UserLoginState";
+import TeamCreatePage from "@/pages/TeamCreatePage.vue";
+import TeamUpdatePage from "@/pages/TeamUpdatePage.vue";
 
 const routes = [
-    {path: '/user/login', component: UserLogin, meta: {title: '用户登录'}},
+    {path: '/user/login', component: UserLogin, meta: {title: '登录'}},
 
-    {path: "/search", component: SearchPage, meta: {title: '搜索用户'}},
+    {path: "/search", component: SearchPage,},
 
-    {path: "/search/tags", component: SearchResultPage, meta: {title: '查询结果'}},
+    {path: "/search/tags", component: SearchResultPage,},
 
     {path: '/', redirect: '/home'},
 
@@ -24,6 +26,8 @@ const routes = [
         children: [
             {path: "home", component: IndexPage, meta: {title: '首页'}},
             {path: "team", component: TeamPage, meta: {title: '组队'}},
+            {path: "team/create", component: TeamCreatePage, meta: {title: '创建队伍'}},
+            {path: "team/update", component: TeamUpdatePage, meta: {title: '修改队伍'}},
             {path: "user", component: UserPage, meta: {title: '我的'}},
             {path: "user/edit", component: UserEditPage, meta: {title: '修改个人信息'}},
         ]

@@ -4,31 +4,30 @@ import {useRoute} from "vue-router";
 import myAxios from "@/utils/myAxios";
 import qs from "qs";
 import UserCardList from "@/components/UserCardList.vue";
-import User = API.User;
+import {UserAPI} from "@/api/user";
+import {CommonResponse, User} from "@/typing";
 
 const route = useRoute()
 let userList = ref<User[]>([])
 onMounted(async () => {
   const tagNameList = route.query.tagNameList ?? []
   console.log(`当前选中的tagName: ${tagNameList}`)
-  userList.value = await myAxios
-      .get('/user/search/tags', {
-        params: {
-          tagNameList: tagNameList
-        },
-        paramsSerializer: {
-          serialize: (params: any) => qs.stringify(params, {
-            arrayFormat: 'repeat'
-          })
-        }
-      })
-      .then(function (response) {
-        console.log(response.data);
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
+  try {
+    const response = await myAxios
+        .get<CommonResponse<User[]>>(UserAPI.searchByTags, {
+          params: {
+            tagNameList: tagNameList
+          },
+          paramsSerializer: {
+            serialize: (params: any) => qs.stringify(params, {
+              arrayFormat: 'repeat'
+            })
+          }
+        });
+    userList.value = response.data ?? []
+  } catch (e) {
+    console.log(`${UserAPI.searchByTags} 加载数据失败`, e)
+  }
   console.log(`搜索到：${userList.value.length} 个用户`)
 })
 </script>
