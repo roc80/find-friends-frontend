@@ -30,20 +30,12 @@ export type TeamCreateRequest = {
 }
 
 export type Team = {
-//         val id: Long? = null,
     id: number;
-//         val name: String? = null,
     name: string;
-//         val description: String? = null,
-    description?: string;
-//         val maxNum: Int? = null,
+    description: string | null;
     maxNum: number;
-//         val ownerUserId: Long? = null,
     ownerUserId: number;
-//         val joinType: TeamTypeEnum? = null,
     joinType: TeamJoinType;
-//         val createDatetime: Date? = null,
     createDatetime: Date;
-//         val members: List<UserDTO>? = null
     members: User[];
 };

@@ -63,13 +63,13 @@ watch(active, async (newName) => {
     </van-button>
     <van-tabs v-model:active="active">
       <van-tab :name="0" title="所有的">
-        <TeamCardList :team-list="allTeam"/>
+        <TeamCardList :teams="allTeam"/>
       </van-tab>
       <van-tab :name="1" title="已加入的">
-        <TeamCardList :team-list="joinedTeam"/>
+        <TeamCardList :teams="joinedTeam"/>
       </van-tab>
       <van-tab :name="2" title="自己管理的">
-        <TeamCardList :team-list="ownedTeam"/>
+        <TeamCardList :teams="ownedTeam"/>
       </van-tab>
     </van-tabs>
 
