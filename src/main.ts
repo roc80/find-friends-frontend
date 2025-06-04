@@ -1,5 +1,6 @@
 import {createApp} from 'vue'
 import * as Vant from 'vant'
+import {Dialog} from 'vant'
 import "vant/lib/index.css";
 import App from "@/App.vue";
 import router from "@/router/route";
@@ -12,6 +13,7 @@ const pinia = createPinia();
 // TODO@lp 上线前改为按需引入
 app.use(Vant);
 
+app.use(Dialog)
 app.use(pinia)
 // 初始化用户状态
 try {

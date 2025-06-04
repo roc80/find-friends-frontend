@@ -7,6 +7,7 @@ import {showToast} from "vant";
 import {TeamJoinType} from "@/enums/TeamJoinType";
 import {CommonResponse, TeamCreateRequest} from "@/typing";
 import {useRouter} from "vue-router";
+import {ResponseCode} from "@/enums/ResponseCode";
 
 let teamCreateRequest = ref<TeamCreateRequest>({
   name: '',
@@ -16,7 +17,7 @@ let teamCreateRequest = ref<TeamCreateRequest>({
 const router = useRouter()
 const doCreateTeam = async () => {
   const res = await myAxios.post<CommonResponse<boolean>>(TeamAPI.create, teamCreateRequest.value)
-  if (res.code === 20000 && res.data && res.data) {
+  if (res.code === ResponseCode.SUCCESS && res.data && res.data) {
     showToast({
       message: '队伍创建成功',
       icon: 'success',

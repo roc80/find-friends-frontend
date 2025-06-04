@@ -6,6 +6,7 @@ import {useRoute, useRouter} from "vue-router";
 import {useUserStore} from "@/stores/UserLoginState";
 import {UserAPI} from "@/api/user";
 import {CommonResponse, User} from "@/typing";
+import {ResponseCode} from "@/enums/ResponseCode";
 
 const username = ref('');
 const password = ref('');
@@ -17,7 +18,7 @@ const onSubmit = async () => {
       username: username.value,
       password: password.value
     });
-    if (res.code === 20000) {
+    if (res.code === ResponseCode.SUCCESS) {
       useUserStore().setUser(res.data!)
       const redirect = route.query.redirect as string;
       console.log('after login redirect: ', redirect);

@@ -6,6 +6,7 @@ import {showFailToast, showSuccessToast} from "vant";
 import {defaultUserState, useUserStore} from "@/stores/UserLoginState";
 import {UserAPI} from "@/api/user";
 import {User} from "@/typing";
+import {ResponseCode} from "@/enums/ResponseCode";
 
 const route = useRoute();
 const router = useRouter();
@@ -29,7 +30,7 @@ const onSubmit = async () => {
       "userId": currentUser.userId,
       [editUser.value.fieldKey]: editUser.value.fieldValue,
     })
-    if (response.code !== 20000) {
+    if (response.code !== ResponseCode.SUCCESS) {
       showFailToast('修改失败');
       return;
     } else {

@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from "vue-router";
+import {createRouter, createWebHashHistory, RouteLocationNormalizedLoaded} from "vue-router";
 import SearchPage from "@/pages/SearchPage.vue";
 import UserPage from "@/pages/UserPage.vue";
 import IndexPage from "@/pages/IndexPage.vue";
@@ -27,7 +27,14 @@ const routes = [
             {path: "home", component: IndexPage, meta: {title: '首页'}},
             {path: "team", component: TeamPage, meta: {title: '组队'}},
             {path: "team/create", component: TeamCreatePage, meta: {title: '创建队伍'}},
-            {path: "team/update", component: TeamUpdatePage, meta: {title: '修改队伍'}},
+            {
+                path: "team/update",
+                component: TeamUpdatePage,
+                meta: {title: '修改队伍'},
+                props: (route: RouteLocationNormalizedLoaded) => ({
+                    teamId: route.query.teamId as string | null
+                })
+            },
             {path: "user", component: UserPage, meta: {title: '我的'}},
             {path: "user/edit", component: UserEditPage, meta: {title: '修改个人信息'}},
         ]

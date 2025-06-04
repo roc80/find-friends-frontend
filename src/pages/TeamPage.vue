@@ -13,9 +13,9 @@ const active = ref(0)
 const doCreateTeam = () => {
   router.push('/team/create')
 }
-const allTeam = ref<Team[] | null>(null)
-const joinedTeam = ref<Team[] | null>(null)
-const ownedTeam = ref<Team[] | null>(null)
+const allTeam = ref<Team[]>([])
+const joinedTeam = ref<Team[]>([])
+const ownedTeam = ref<Team[]>([])
 watch(active, async (newName) => {
   const currentTabIndex = Number(newName)
   switch (currentTabIndex) {
@@ -27,7 +27,7 @@ watch(active, async (newName) => {
             pageSize: 10
           }
         });
-        allTeam.value = res.data;
+        allTeam.value = res.data ?? [];
       } catch (error) {
         console.error('获取所有队伍失败：', error);
       }
@@ -36,7 +36,7 @@ watch(active, async (newName) => {
     case 1: {
       try {
         const res = await myAxios.get<CommonResponse<Team[]>>(TeamAPI.retrieveMyJoined);
-        joinedTeam.value = res.data;
+        joinedTeam.value = res.data ?? [];
       } catch (error) {
         console.error('获取已加入的队伍失败：', error);
       }
@@ -45,7 +45,7 @@ watch(active, async (newName) => {
     case 2: {
       try {
         const res = await myAxios.get<CommonResponse<Team[]>>(TeamAPI.retrieveMyOwned);
-        ownedTeam.value = res.data;
+        ownedTeam.value = res.data ?? [];
       } catch (error) {
         console.error('获取自己管理的队伍失败：', error);
       }

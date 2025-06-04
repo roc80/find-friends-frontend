@@ -6,4 +6,5 @@ export const TeamAPI = {
     retrieveByPage : '/team/page',
     retrieveMyOwned : '/team/my/owned',
     retrieveMyJoined : '/team/my/joined',
+    retrieveById : '/team/id',
 }

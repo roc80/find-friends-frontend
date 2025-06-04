@@ -29,13 +29,26 @@ export type TeamCreateRequest = {
     joinType: TeamJoinType;
 }
 
+export type TeamUpdateRequest = {
+    id: number;
+    name: string;
+    description: string | undefined;
+    ownerUserId: number;
+    maxNum: number;
+    status: number | undefined;
+    joinKey: string | undefined;
+    joinType: TeamJoinType;
+    memberIdList: number[];
+}
+
 export type Team = {
     id: number;
     name: string;
-    description: string | null;
+    description: string | undefined;
     maxNum: number;
     ownerUserId: number;
     joinType: TeamJoinType;
+    joinKey: string | undefined;
     createDatetime: Date;
     members: User[];
 };

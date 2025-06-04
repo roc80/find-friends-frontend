@@ -3,6 +3,7 @@ import myAxios from "@/utils/myAxios";
 import {showSuccessToast} from "vant";
 import {UserAPI} from "@/api/user";
 import {CommonResponse, User} from "@/typing";
+import {ResponseCode} from "@/enums/ResponseCode";
 
 export const defaultUserState: User = {
     userName: '',
@@ -34,7 +35,7 @@ export const useUserStore = defineStore('user', {
             this.isLoading = true;
             try {
                 const res = await myAxios.get<CommonResponse<User>>(UserAPI.current);
-                if (res.code === 20000 && res.data) {
+                if (res.code === ResponseCode.SUCCESS && res.data) {
                     this.userState = res.data;
                     // 存储到 localStorage 以便页面刷新后恢复
                     this.saveToStorage();
