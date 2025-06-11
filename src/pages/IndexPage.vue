@@ -20,6 +20,7 @@ const isAllUserLoading = ref<boolean>(false)
 const fetchAllUsers = async () => {
   if (hasLoadAll.value) return
   try {
+    isAllUserLoading.value = true
     const response = await myAxios.get<CommonResponse<User[]>>(UserAPI.getAllUsers, {
       params: {
         pageNum: pageNum.value,
@@ -30,12 +31,15 @@ const fetchAllUsers = async () => {
     hasLoadAll.value = true
   } catch (error) {
     console.error(`首页数据加载失败 ${UserAPI.getAllUsers}`, error);
+  } finally {
+    isAllUserLoading.value = false
   }
 }
 
 const fetchRecommendUsers = async () => {
   if (hasLoadRecommend.value) return
   try {
+    isRecommendUserLoading.value = true
     const response = await myAxios.get<CommonResponse<User[]>>(UserAPI.recommendUsers, {
       params: {
         pageNum: pageNum.value,
@@ -46,7 +50,19 @@ const fetchRecommendUsers = async () => {
     hasLoadRecommend.value = true
   } catch (error) {
     console.error(`首页数据加载失败 ${UserAPI.recommendUsers}`, error);
+  } finally {
+    isRecommendUserLoading.value = false
   }
+}
+
+const onRefreshRecommend = async () => {
+  hasLoadRecommend.value = false;
+  await fetchRecommendUsers();
+}
+
+const onRefreshAll = async () => {
+  hasLoadAll.value = false;
+  await fetchAllUsers();
 }
 
 onMounted(async () => {
@@ -65,22 +81,12 @@ watch(activeTabIndex, async (newIndex, _) => {
 <template>
   <van-tabs v-model:active="activeTabIndex">
     <van-tab title="推荐用户">
-      <van-pull-refresh v-model:loading="isRecommendUserLoading" @refresh="async () => {
-        isRecommendUserLoading = true;
-        hasLoadRecommend = false;
-        await fetchRecommendUsers();
-        isRecommendUserLoading = false;
-      }">
+      <van-pull-refresh :model-value="isRecommendUserLoading" @refresh="onRefreshRecommend">
         <UserCardList :userList="recommendUserList"/>
       </van-pull-refresh>
     </van-tab>
     <van-tab title="所有用户">
-      <van-pull-refresh v-model:loading="isAllUserLoading" @refresh="async () => {
-        isAllUserLoading = true;
-        hasLoadAll = false;
-        await fetchAllUsers();
-        isAllUserLoading = false;
-      }">
+      <van-pull-refresh :model-value="isAllUserLoading" @refresh="onRefreshAll">
         <UserCardList :userList="allUserList"/>
       </van-pull-refresh>
     </van-tab>

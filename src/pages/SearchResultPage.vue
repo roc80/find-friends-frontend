@@ -9,14 +9,19 @@ import {CommonResponse, User} from "@/typing";
 
 const route = useRoute()
 let userList = ref<User[]>([])
+const tagNameList = ref<string[]>()
 onMounted(async () => {
-  const tagNameList = route.query.tagNameList ?? []
-  console.log(`当前选中的tagName: ${tagNameList}`)
+  const {tagNameList: queryParam} = route.query;
+  if (!queryParam) {
+    return
+  }
   try {
+    const parsed = JSON.parse(queryParam as string);
+    tagNameList.value = Array.isArray(parsed) ? parsed : []
     const response = await myAxios
         .get<CommonResponse<User[]>>(UserAPI.searchByTags, {
           params: {
-            tagNameList: tagNameList
+            tagNameList: tagNameList.value
           },
           paramsSerializer: {
             serialize: (params: any) => qs.stringify(params, {

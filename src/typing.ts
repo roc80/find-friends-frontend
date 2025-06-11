@@ -52,3 +52,9 @@ export type Team = {
     createDatetime: Date;
     members: User[];
 };
+
+export type TagTreeNode = {
+    id: number;
+    tagName: string;
+    children: TagTreeNode[];
+};
