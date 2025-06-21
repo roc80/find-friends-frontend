@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import {parseTags} from "@/utils/UserUtil";
 import {defaultUserState, useUserStore} from "@/stores/UserLoginState";
 import {User} from "@/typing";
 
@@ -25,6 +24,10 @@ const goEditPage = (key: string, fieldName: string) => {
 const onLogout = async () => {
   await useUserStore().logout();
   await router.push('/user/login');
+}
+
+const goUserTagPage = () => {
+  router.push('/user/tags');
 }
 </script>
 
@@ -60,17 +63,7 @@ const onLogout = async () => {
       <van-cell title="注册时间" :value="currentUser.createDatetime"/>
 
       <!-- 标签 -->
-      <van-cell title="标签" is-link @click="goEditPage('tags', '标签')">
-        <template #value>
-          <van-tag
-              v-for="tag in parseTags(currentUser.tags)"
-              type="primary"
-              style="margin-right: 5px; margin-bottom: 5px"
-          >
-            {{ tag }}
-          </van-tag>
-        </template>
-      </van-cell>
+      <van-cell title="标签" is-link @click="goUserTagPage"/>
     </van-cell-group>
   </div>
 

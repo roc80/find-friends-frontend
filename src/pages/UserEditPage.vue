@@ -15,16 +15,9 @@ const editUser = ref({
   fieldKey: route.query.key as string ?? "",
   fieldValue: route.query.value as string ?? "",
 })
-if (editUser.value.fieldKey === 'tags') {
-  editUser.value.fieldValue = JSON.parse(editUser.value.fieldValue);
-}
 const currentUser: User = useUserStore().currentUser ?? defaultUserState;
 
 const onSubmit = async () => {
-  if (editUser.value.fieldKey === 'tags') {
-    editUser.value.fieldValue = stringToJsonArray(editUser.value.fieldValue);
-  }
-
   try {
     const response = await myAxios.post(UserAPI.update, {
       "userId": currentUser.userId,
@@ -43,10 +36,6 @@ const onSubmit = async () => {
   }
 };
 
-function stringToJsonArray(inputString: string) {
-  const array = inputString.split(',');
-  return JSON.stringify(array.map(item => item.trim()));
-}
 </script>
 
 <template>

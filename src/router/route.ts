@@ -10,6 +10,7 @@ import TeamPage from "@/pages/TeamPage.vue";
 import {useUserStore} from "@/stores/UserLoginState";
 import TeamCreatePage from "@/pages/TeamCreatePage.vue";
 import TeamUpdatePage from "@/pages/TeamUpdatePage.vue";
+import UserTagPage from "@/pages/UserTagPage.vue";
 
 const routes = [
     {path: '/user/login', component: UserLogin, meta: {title: '登录'}},
@@ -37,6 +38,7 @@ const routes = [
             },
             {path: "user", component: UserPage, meta: {title: '我的'}},
             {path: "user/edit", component: UserEditPage, meta: {title: '修改个人信息'}},
+            {path: "user/tags", component: UserTagPage, meta: {title: '我的标签'}},
         ]
     }
 ]

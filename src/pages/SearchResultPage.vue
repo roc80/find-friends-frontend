@@ -9,19 +9,19 @@ import {CommonResponse, User} from "@/typing";
 
 const route = useRoute()
 let userList = ref<User[]>([])
-const tagNameList = ref<string[]>()
+const tagIds = ref<number[]>()
 onMounted(async () => {
-  const {tagNameList: queryParam} = route.query;
+  const {tagIds: queryParam} = route.query;
   if (!queryParam) {
     return
   }
   try {
     const parsed = JSON.parse(queryParam as string);
-    tagNameList.value = Array.isArray(parsed) ? parsed : []
+    tagIds.value = Array.isArray(parsed) ? parsed : []
     const response = await myAxios
         .get<CommonResponse<User[]>>(UserAPI.searchByTags, {
           params: {
-            tagNameList: tagNameList.value
+            tagIds: tagIds.value
           },
           paramsSerializer: {
             serialize: (params: any) => qs.stringify(params, {

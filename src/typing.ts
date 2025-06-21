@@ -10,7 +10,6 @@ export type User = {
     userRole: string;
     createDatetime: string;
     state: string;
-    tags?: string;
 };
 
 export type CommonResponse<T> = {
@@ -58,3 +57,9 @@ export type TagTreeNode = {
     tagName: string;
     children: TagTreeNode[];
 };
+
+export type Tag = {
+    id: number;
+    tagName: string;
+    createDatetime: string;
+}
