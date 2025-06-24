@@ -23,7 +23,6 @@ interface CustomAxiosInstance {
 }
 
 const myAxios = axios.create({
-    // TODO@lp replace
     baseURL: "http://localhost:8080/api",
     withCredentials: true,
 }) as CustomAxiosInstance;

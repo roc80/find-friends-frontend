@@ -15,7 +15,6 @@ export const defaultUserState: User = {
     userRole: '',
     createDatetime: '',
     state: '',
-    tags: '',
 };
 
 interface UserState {

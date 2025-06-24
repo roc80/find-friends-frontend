@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {defaultUserState, useUserStore} from "@/stores/UserLoginState";
-import {User} from "@/typing";
+import {CommonResponse, User} from "@/typing";
+import {ref} from "vue";
+import myAxios from "@/utils/myAxios";
+import {UserAPI} from "@/api/user";
+import {ResponseCode} from "@/enums/ResponseCode";
+import {showFailToast, showSuccessToast} from "vant";
 
 const currentUser: User = useUserStore().currentUser ?? defaultUserState;
 
@@ -29,17 +34,67 @@ const onLogout = async () => {
 const goUserTagPage = () => {
   router.push('/user/tags');
 }
+
+const fileInput = ref<HTMLInputElement | null>(null)
+
+const triggerUpload = () => {
+  fileInput.value?.click()
+}
+
+// 处理选择文件后的上传
+const handleFileChange = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('userId', currentUser.userId.toString())
+
+  try {
+    const res = await myAxios.post<CommonResponse<string>>(UserAPI.uploadAvatar, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    if (res.code === ResponseCode.SUCCESS) {
+      currentUser.avatarUrl = typeof res.data === 'string' ? res.data : ''
+      showSuccessToast('上传成功')
+      location.reload()
+    } else {
+      showFailToast('上传失败')
+      console.error(`上传失败: ${res.message}, ${res.description}`)
+    }
+  } catch (error) {
+    showFailToast('上传头像出错')
+    console.error('上传头像出错', error)
+  } finally {
+    target.value = ''
+  }
+}
 </script>
 
 <template>
   <div class="user-profile">
     <!-- 头像 -->
     <div style="display:flex; justify-content: center;">
-      <van-image
-          :src=currentUser.avatarUrl
-          round fill="contain"
-          width="100"
-          height="100"
+      <div @click="triggerUpload" style="cursor: pointer;">
+        <van-image
+            :src="currentUser.avatarUrl"
+            round
+            fit="cover"
+            width="100"
+            height="100"
+        />
+      </div>
+
+      <!-- 隐藏的文件选择器 -->
+      <input
+          ref="fileInput"
+          type="file"
+          accept="image/*"
+          style="display: none"
+          @change="handleFileChange"
       />
     </div>
 

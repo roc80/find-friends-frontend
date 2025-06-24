@@ -6,5 +6,6 @@ export const UserAPI = {
     logout: '/user/logout',
     update: '/user/update',
     login: '/user/login',
-    updateMyTags: '/user/my/tags'
+    updateMyTags: '/user/my/tags',
+    uploadAvatar: '/user/avatar',
 };
