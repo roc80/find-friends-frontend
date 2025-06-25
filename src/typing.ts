@@ -20,6 +20,13 @@ export type CommonResponse<T> = {
     dateTime: Date;
 };
 
+export type PageResponse<T> = {
+    records: T[];
+    pageNum: number;
+    pageSize: number;
+    hasMore: boolean;
+}
+
 export type TeamCreateRequest = {
     name: string;
     description?: string;

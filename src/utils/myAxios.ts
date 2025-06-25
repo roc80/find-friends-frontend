@@ -28,7 +28,7 @@ const myAxios = axios.create({
 }) as CustomAxiosInstance;
 
 myAxios.interceptors.request.use(config => {
-    // console.log(`request interceptor: url=${config.baseURL}${config.url}`);
+    console.log(`request interceptor: url=${config.baseURL}${config.url}`);
     return config;
 }, error => {
     return Promise.reject(error);

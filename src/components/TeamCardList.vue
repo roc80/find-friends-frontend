@@ -197,7 +197,6 @@ const doExit = async (team: Team) => {
         showFailToast('无法打开输入框');
         return;
       }
-      console.log(nextOwnerUserId)
       if (!nextOwnerUserId) {
         showFailToast('需要输入正确的id');
         return;
@@ -249,7 +248,7 @@ const doDelete = async (teamId: number) => {
     location.reload()
   } else {
     showFailToast("删除失败")
-    console.log(res)
+    console.error(`删除失败，${res.description}`)
   }
 }
 

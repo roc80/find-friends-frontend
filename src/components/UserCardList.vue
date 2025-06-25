@@ -32,7 +32,7 @@ watch(() => props.userList, loadAllUserTags, {immediate: true});
 
 <template>
   <div class="user-list">
-    <van-empty v-if="!userList || userList.length == 0" description="未找到用户"/>
+    <van-empty :image-size="[200, 400]" v-if="!userList || userList.length == 0" description="未找到用户"/>
     <van-card class="custom-card" v-for="user in userList"
               :thumb=user.avatarUrl
               :title=user.userName
