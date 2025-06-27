@@ -24,7 +24,7 @@ export type PageResponse<T> = {
     records: T[];
     pageNum: number;
     pageSize: number;
-    hasMore: boolean;
+    totalNum: number;
 }
 
 export type TeamCreateRequest = {

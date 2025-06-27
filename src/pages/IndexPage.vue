@@ -36,7 +36,7 @@ const fetchAllUsers = async () => {
     })
     if (response.code === ResponseCode.SUCCESS) {
       allUserList.value = response.data?.records ?? []
-      allHasMore.value = response.data?.hasMore ?? false
+      allHasMore.value = (response.data?.totalNum ?? 0) > (pageNum.value * pageSize)
     } else {
       console.error(`message = ${response.message}, description = ${response.description}`)
       showFailToast('拉取用户失败')
@@ -62,7 +62,7 @@ const fetchRecommendUsers = async () => {
     })
     if (response.code === ResponseCode.SUCCESS) {
       recommendUserList.value = response.data?.records ?? []
-      recommendHasMore.value = response.data?.hasMore ?? false
+      recommendHasMore.value = (response.data?.totalNum ?? 0) > (pageNum.value * pageSize)
     } else {
       console.error(`message = ${response.message}, description = ${response.description}`)
       showFailToast('推荐用户失败')
