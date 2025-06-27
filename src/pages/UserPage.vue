@@ -28,7 +28,7 @@ const goEditPage = (key: string, fieldName: string) => {
 
 const onLogout = async () => {
   await useUserStore().logout();
-  await router.push('/user/login');
+  await router.push('/');
 }
 
 const goUserTagPage = () => {

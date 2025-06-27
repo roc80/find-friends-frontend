@@ -4,16 +4,15 @@ import UserPage from "@/pages/UserPage.vue";
 import IndexPage from "@/pages/IndexPage.vue";
 import UserEditPage from "@/pages/UserEditPage.vue";
 import SearchResultPage from "@/pages/SearchResultPage.vue";
-import UserLogin from "@/pages/UserLoginPage.vue";
 import BasicLayout from "@/layout/BasicLayout.vue";
 import TeamPage from "@/pages/TeamPage.vue";
 import {useUserStore} from "@/stores/UserLoginState";
 import TeamCreatePage from "@/pages/TeamCreatePage.vue";
 import TeamUpdatePage from "@/pages/TeamUpdatePage.vue";
 import UserTagPage from "@/pages/UserTagPage.vue";
+import envConfig from "@/config/env"
 
 const routes = [
-    {path: '/user/login', component: UserLogin, meta: {title: '登录'}},
 
     {path: "/search", component: SearchPage,},
 
@@ -50,26 +49,13 @@ const router = createRouter({
 
 router.beforeEach(async (to, _, next): Promise<void> => {
     const userStore = useUserStore();
-    if (to.path === '/user/login') {
-        if (userStore.isAuthenticated) {
-            const redirect = to.query.redirect as string;
-            if (redirect) {
-                next(redirect);
-            } else {
-                next('/');
-            }
-            return;
-        }
-        next();
-        return;
-    }
     if (userStore.isAuthenticated) {
         next();
     } else {
-        next({
-            path: '/user/login',
-            query: {redirect: to.path}
-        });
+        const callbackDomain = encodeURIComponent(window.location.origin);
+        const appLoginUrl = envConfig.getConfig().appLoginUrl
+        window.location.href = `${appLoginUrl}?redirect_url=${callbackDomain}`;
+        return;
     }
 });
 

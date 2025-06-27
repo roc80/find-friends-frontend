@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import envConfig from '@/config/env'
 
 interface CustomAxiosInstance {
     get<T = any>(url: string, config?: any): Promise<T>;
@@ -23,7 +24,7 @@ interface CustomAxiosInstance {
 }
 
 const myAxios = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: envConfig.getConfig().apiBaseUrl,
     withCredentials: true,
 }) as CustomAxiosInstance;
 
