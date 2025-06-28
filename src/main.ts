@@ -8,12 +8,17 @@ import {setupVant} from "@/plugins/setupVant";
 
 const app = createApp(App);
 setupVant(app);
-app.use(createPinia());
-try {
-    await initUserState();
-    console.log('用户状态初始化完成');
-} catch (error) {
-    console.error('用户状态初始化失败', error);
-}
 app.use(router)
-app.mount('#app');
+app.use(createPinia());
+async function bootstrap() {
+    try {
+        await initUserState();
+        console.log("用户状态初始化完成");
+    } catch (error) {
+        console.error("用户状态初始化失败:", error);
+    } finally {
+        app.mount('#app');
+    }
+}
+
+bootstrap();
