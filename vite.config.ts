@@ -23,14 +23,6 @@ export default defineConfig(({command, mode}) => {
                     warn(warning);
                 },
             },
-            // 生产环境移除 console 和 debugger
-            minify: 'terser',
-            terserOptions: {
-                compress: {
-                    drop_console: mode === 'production',
-                    drop_debugger: mode === 'production',
-                },
-            },
         },
     }
 });
