@@ -2,13 +2,19 @@
 import {useRouter} from "vue-router";
 import {defaultUserState, useUserStore} from "@/stores/UserLoginState";
 import {CommonResponse, User} from "@/typing";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import myAxios from "@/utils/myAxios";
 import {UserAPI} from "@/api/user";
 import {ResponseCode} from "@/enums/ResponseCode";
 import {showFailToast, showSuccessToast} from "vant";
 
-const currentUser: User = useUserStore().currentUser ?? defaultUserState;
+const userStore = useUserStore();
+let currentUser: User = userStore.currentUser ?? defaultUserState;
+
+onMounted(async () => {
+  await userStore.fetchUser();
+  currentUser = userStore.currentUser ?? defaultUserState;
+})
 
 const userEditPagePath = '/user/edit';
 const router = useRouter()

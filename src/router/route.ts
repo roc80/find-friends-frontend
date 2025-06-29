@@ -49,7 +49,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, _, next): Promise<void> => {
     const userStore = useUserStore();
-    await userStore.initUser();
+    await userStore.fetchUser();
     if (userStore.isAuthenticated) {
         next();
     } else {
